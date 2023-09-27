@@ -6,6 +6,7 @@ from PIL import Image
 from io import BytesIO
 from main.helpers import util
 import json
+from uuid import uuid4
 
 def extract_text_from_image(image_path):
     try:
@@ -38,21 +39,37 @@ def make_http_request(url):
         return None
     
 
-
-
-
 # Extract text from an image
-image_path = 'images/test1.png'  # Replace with the path to your image file
-extracted_text = extract_text_from_image(image_path)
+def send_document():
+    image_path = 'images/test2.png'  # Replace with the path to your image file
+    extracted_text = extract_text_from_image(image_path)
 
-if extracted_text:
-    print("Extracted Text:")
-    # print(extracted_text)
-    res: requests.Response = requests.post("http://127.0.0.1:8000/load_documents/", json={"documents": util.split_text_into_chunks(extracted_text)})
-    if res.status_code == 200:
-        print(res.json()["summary"])
-else:
-    print("Text extraction failed.")
+    if extracted_text:
+        print("Extracted Text:")
+        # print(extracted_text)
+        req = requests.Session()
+        res: requests.Response = req.post("http://127.0.0.1:8000/load_documents/", json={"documents": util.split_text_into_chunks(extracted_text), "uid": uuid4().hex})
+        if res.status_code == 200:
+            print(res.json()["summary"])
+    else:
+        print("Text extraction failed.")
+
+def chat_test():
+    while True:
+        prompt = input()
+        res : requests.Response = requests.get("http://127.0.0.1:8000/chat_response/", json={"prompt": prompt})
+        if res.status_code == 200:
+            print(res.json()["reply"])
+        else:
+            print(res)
+
+
+def test_generetor():
+    while True:
+        prompt = input()
+        res : requests.Response = requests.get("http://127.0.0.1:8000/generate/", json={"prompt": prompt})
+        print(res.json()["document"])
+        print()
 
 # Make an HTTP request
 # url = 'https://example.com'  # Replace with the URL you want to request
