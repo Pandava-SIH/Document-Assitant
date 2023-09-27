@@ -53,13 +53,34 @@ def get_summary(data_chunks: list[str]) -> str:
 
     while True :
         message = [{"role": "user", "content": text} for text in data_chunks]
+        context.append(message)
 
         # chat completion method
-        return g4f.ChatCompletion.create(
+        response = g4f.ChatCompletion.create(
             model= "gpt-3.5-turbo",
             provider= g4f.Provider.Bing,
-            messages= message
+            messages= context
         )
+
+        print(response)
+        
+        # printing the model's reply
+        reply = response.choices[0].message[{'content'}]
+        print("Model:", reply)
+
+        # adding the reply to context
+        context.append({"role": "assistant", "content": reply})
+
+        while True:
+            # taking user input
+            user_input = input("Query : ") 
+            if user_input.lower() == "exit":
+                break
+        
+        # interaction with user model
+        get_summary(user_input)  
+
+
 
 # main method 
 if __name__ == "__main__":
