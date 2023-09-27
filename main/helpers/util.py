@@ -1,12 +1,12 @@
-# For extracting text from pdf 
-
+import nltk
+from nltk import sent_tokenize
 # for PDF handling
 import PyPDF2
 
+#Failing
 def extract_text_from_pdf(pdf_path):
     text = ""  # Initialize an empty string to store the extracted text
     try:
-       
         with open(pdf_path, 'rb') as pdf_file:
             pdf_reader = PyPDF2.PdfFileReader(pdf_file)  # Create a PDF reader object
             for page_num in range(pdf_reader.numPages):
@@ -19,11 +19,12 @@ def extract_text_from_pdf(pdf_path):
 
 # Funtion for spliting a long text in smaller chunks
 
-import nltk
-from nltk import sent_tokenize
 
 # Download NLTK data for sentence tokenization
-nltk.download("punkt")
+
+#uncomment this to download tokenizer
+# nltk.download("punkt")
+
 def split_text_into_chunks(text, chunk_size=500):
     sentences = sent_tokenize(text)  # Tokenize the text into sentences
     chunks = []  # Initialize an empty list to store the chunks
