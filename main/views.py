@@ -31,7 +31,9 @@ def chat_response(request: HttpRequest) -> JsonResponse:
     res = llm_response.chat_reponse(data)
     return JsonResponse({"reply": res}, status=200)
 
-
-def remove_document(request: HttpRequest) -> JsonResponse:
-    pass
+def generate_document(request: HttpRequest) -> JsonResponse:
+    data = json.loads(request.body)["prompt"]
+    print(data)
+    res = llm_response.generate_document(data)
+    return JsonResponse({"document": res})
 

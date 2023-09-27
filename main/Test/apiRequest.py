@@ -41,7 +41,7 @@ def make_http_request(url):
 
 # Extract text from an image
 def send_document():
-    image_path = 'images/test1.png'  # Replace with the path to your image file
+    image_path = 'images/test2.png'  # Replace with the path to your image file
     extracted_text = extract_text_from_image(image_path)
 
     if extracted_text:
@@ -51,18 +51,25 @@ def send_document():
         res: requests.Response = req.post("http://127.0.0.1:8000/load_documents/", json={"documents": util.split_text_into_chunks(extracted_text), "uid": uuid4().hex})
         if res.status_code == 200:
             print(res.json()["summary"])
-            print(req.cookies)
     else:
         print("Text extraction failed.")
 
 def chat_test():
-    prompt = input()
-    res : requests.Response = requests.get("http://127.0.0.1:8000/chat_response/", json={"prompt": prompt})
-    if res.status_code == 200:
-        print(res.json()["reply"])
-    else:
-        print(res)
+    while True:
+        prompt = input()
+        res : requests.Response = requests.get("http://127.0.0.1:8000/chat_response/", json={"prompt": prompt})
+        if res.status_code == 200:
+            print(res.json()["reply"])
+        else:
+            print(res)
 
+
+def test_generetor():
+    while True:
+        prompt = input()
+        res : requests.Response = requests.get("http://127.0.0.1:8000/generate/", json={"prompt": prompt})
+        print(res.json()["document"])
+        print()
 
 # Make an HTTP request
 # url = 'https://example.com'  # Replace with the URL you want to request
