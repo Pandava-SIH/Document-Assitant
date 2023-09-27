@@ -55,8 +55,6 @@ if __name__ == "__main__":
         chat_reponse(query)
 
 
-
-
 # def fill_legal_document(user_document_text, user_details, legal_document_template):
 #     """
 #     Fill in user details from their document into a legal document template.
