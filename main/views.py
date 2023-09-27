@@ -13,7 +13,7 @@ def load_documents(request: HttpRequest) -> JsonResponse:
     
     #parse request json to dictionary
     data : list[str] = json.loads(request.body);
-    data, uid = data["documents"], data["uid"]
+    data = data["documents"]
     
     summary, time = llm_response.get_summary(data)
     for i in data:
@@ -22,10 +22,11 @@ def load_documents(request: HttpRequest) -> JsonResponse:
     # db = Store(uid=uid, data="<-||->".join(data), summary=summary)
     # db.save()
     print(time)
-
+    summary = summary.replace("```", "---")
     response = {"summary":summary}
     return JsonResponse(response)
 
+@csrf_exempt
 def chat_response(request: HttpRequest) -> JsonResponse:
     data = json.loads(request.body)["prompt"]
     res = llm_response.chat_reponse(data)
