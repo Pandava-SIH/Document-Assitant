@@ -4,8 +4,8 @@ import pytesseract
 import requests
 from PIL import Image
 from io import BytesIO
-import text_extraction
-
+from main.helpers import util
+import json
 
 def extract_text_from_image(image_path):
     try:
@@ -15,7 +15,7 @@ def extract_text_from_image(image_path):
         # Perform OCR to extract text
         extracted_text = pytesseract.image_to_string(img)
 
-        return extracted_text.strip()  
+        return extracted_text
 
     except Exception as e:
         print(f"Error extracting text from image: {str(e)}")
@@ -42,21 +42,23 @@ def make_http_request(url):
 
 
 # Extract text from an image
-image_path = 'image.png'  # Replace with the path to your image file
-extracted_text = text_extraction.extract_text_from_image(image_path)
+image_path = 'images/test1.png'  # Replace with the path to your image file
+extracted_text = extract_text_from_image(image_path)
 
 if extracted_text:
     print("Extracted Text:")
-    print(extracted_text)
+    # print(extracted_text)
+    res = requests.post("http://127.0.0.1:8000/load_documents/", json={"documents": util.split_text_into_chunks(extracted_text)})
+    print(res)
 else:
     print("Text extraction failed.")
 
 # Make an HTTP request
-url = 'https://example.com'  # Replace with the URL you want to request
-response_text = text_extraction.make_http_request(url)
+# url = 'https://example.com'  # Replace with the URL you want to request
+# response_text = text_extraction.make_http_request(url)
 
-if response_text:
-    print("\nHTTP Response:")
-    print(response_text)
-else:
-    print("HTTP request failed.")
+# if response_text:
+#     print("\nHTTP Response:")
+#     print(response_text)
+# else:
+#     print("HTTP request failed.")
