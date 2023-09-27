@@ -1,5 +1,10 @@
 import nltk
 from nltk import sent_tokenize
+
+# Download NLTK data for sentence tokenization
+#uncomment this to download tokenizer
+nltk.download("punkt")
+
 # for PDF handling
 import PyPDF2
 
@@ -20,10 +25,7 @@ def extract_text_from_pdf(pdf_path):
 # Funtion for spliting a long text in smaller chunks
 
 
-# Download NLTK data for sentence tokenization
 
-#uncomment this to download tokenizer
-# nltk.download("punkt")
 
 def split_text_into_chunks(text, chunk_size=500):
     sentences = sent_tokenize(text)  # Tokenize the text into sentences
