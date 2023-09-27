@@ -4,8 +4,7 @@ import pytesseract
 import requests
 from PIL import Image
 from io import BytesIO
-import text_extraction
-
+from text_extractor import text_extraction
 
 def extract_text_from_image(image_path):
     try:
