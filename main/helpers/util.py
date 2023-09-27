@@ -1,48 +1,51 @@
 import nltk
 from nltk import sent_tokenize
+import fitz
 
 # Download NLTK data for sentence tokenization
-#uncomment this to download tokenizer
+# uncomment this to download tokenizer for first time 
 # nltk.download("punkt")
 
-# for PDF handling
-import PyPDF2
+# to extract text from the pdf
+def read_pdf(file_path):
+    doc = fitz.open(file_path)
+    text = ''
 
-#Failing
-def extract_text_from_pdf(pdf_path):
-    text = ""  # Initialize an empty string to store the extracted text
-    try:
-        with open(pdf_path, 'rb') as pdf_file:
-            pdf_reader = PyPDF2.PdfFileReader(pdf_file)  # Create a PDF reader object
-            for page_num in range(pdf_reader.numPages):
-                page = pdf_reader.getPage(page_num)  # Get a specific page from the PDF
-                text += page.extractText()  # Extract text from the page and append to the text variable
-    except Exception as e:
-        print(f"Error extracting text from PDF: {str(e)}")  # Handle any exceptions
-    return text  # Return the extracted text as a string
+    for page_num in range(doc.page_count):
+        page = doc[page_num]
+        text += page.get_text()
 
+    return text
 
-# Funtion for spliting a long text in smaller chunks
+# Example usage:
+# pdf_text = read_pdf(r"C:\Users\hp\Downloads\U62 MTH302.pdf")
 
+# splits the entire text into equal chunks 
+# then, store in a list & give to the llm 
+def split_text_into_chunks(text, chunk_size=512):
 
+    # Tokenize the entire text into sentences
+    sentences = sent_tokenize(text) 
 
+    # Initialize an empty list to store the chunks
+    chunks = []  
 
-def split_text_into_chunks(text, chunk_size=500):
-    sentences = sent_tokenize(text)  # Tokenize the text into sentences
-    chunks = []  # Initialize an empty list to store the chunks
-    current_chunk = ""  # Initialize an empty string for the current chunk
+    # Initialize an empty string for the current chunk
+    current_chunk = ""  
 
     for sentence in sentences:
         if len(current_chunk) + len(sentence) <= chunk_size:
-            current_chunk += " " + sentence  # Add the sentence to the current chunk
+            # Add the sentence to the current chunk
+            current_chunk += " " + sentence
+
         else:
-            chunks.append(current_chunk.strip())  # Append the current chunk to the list of chunks
- 
+            # Append the current chunk to the list of chunks
+            chunks.append(current_chunk.strip()) 
             current_chunk = sentence  
 
     # Append the last remaining chunk if not emty
     if current_chunk:
         chunks.append(current_chunk.strip())  
 
-    return chunks 
+    return chunks
 
