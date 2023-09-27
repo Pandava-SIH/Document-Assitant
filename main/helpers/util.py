@@ -3,7 +3,7 @@ from nltk import sent_tokenize
 
 # Download NLTK data for sentence tokenization
 #uncomment this to download tokenizer
-nltk.download("punkt")
+# nltk.download("punkt")
 
 # for PDF handling
 import PyPDF2

@@ -1,15 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpRequest, JsonResponse
 from .models import *
+from django.views.decorators.csrf import csrf_exempt
 import json
 
+@csrf_exempt
 def load_documents(request: HttpRequest) -> JsonResponse:
     if request.method != "POST": return JsonResponse(status=500)
     
     #parse request json to dictionary
-    data : list[str] = json.loads(request.body);
-
-    print(data)
+    data : list[str] = json.loads(request.body)["documents"];
+    
     response = {"message":"dummy"}
     return JsonResponse(response)
 
