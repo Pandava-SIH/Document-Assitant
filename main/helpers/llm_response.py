@@ -1,6 +1,7 @@
 import g4f
 import main.helpers.util
 import time
+from .chat_store import chat_store
 
 def get_summary(data_chunks: list[str]) -> str:
     """Generate initial summary """
@@ -16,6 +17,21 @@ def get_summary(data_chunks: list[str]) -> str:
     )
 
     return summary, time.time() - t
+
+def chat_reponse(prompt: str):
+    chat_store.append({"role": "user", "content": prompt})
+    print(prompt)
+
+    res = g4f.ChatCompletion.create(
+        model=g4f.models.gpt_35_turbo,
+        provider= g4f.Provider.You,
+        messages=chat_store
+    )
+    if res:
+        chat_store.append({"role": "system", "content": res})
+    else:
+        chat_store.pop()
+    return res
 
 
 if __name__ == "__main__":

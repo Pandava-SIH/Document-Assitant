@@ -21,5 +21,5 @@ from main.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("load_documents/", load_documents, name="load_documents"),  # POST {documents: list[str]}
-    path("chat_response/<str:chat_input>", chat_response, name="chat_response")  # GET {promt: str}
+    path("chat_response/", chat_response, name="chat_response")  # GET {promt: str}
 ]
