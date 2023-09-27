@@ -48,8 +48,9 @@ extracted_text = extract_text_from_image(image_path)
 if extracted_text:
     print("Extracted Text:")
     # print(extracted_text)
-    res = requests.post("http://127.0.0.1:8000/load_documents/", json={"documents": util.split_text_into_chunks(extracted_text)})
-    print(res)
+    res: requests.Response = requests.post("http://127.0.0.1:8000/load_documents/", json={"documents": util.split_text_into_chunks(extracted_text)})
+    if res.status_code == 200:
+        print(res.json()["summary"])
 else:
     print("Text extraction failed.")
 
