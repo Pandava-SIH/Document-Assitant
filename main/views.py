@@ -4,6 +4,7 @@ from .models import *
 from django.views.decorators.csrf import csrf_exempt
 import json
 from .helpers import llm_response
+from uuid import uuid4
 
 @csrf_exempt
 def load_documents(request: HttpRequest) -> JsonResponse:
@@ -13,7 +14,11 @@ def load_documents(request: HttpRequest) -> JsonResponse:
     data : list[str] = json.loads(request.body)["documents"];
     
     summary, time = llm_response.get_summary(data)
+    uid = uuid4().hex()
+    db = Store(uid=uid, data=" ".join(data), summary=summary)
+    db.save()
     print(time)
+
     response = {"summary":summary}
     return JsonResponse(response)
 
