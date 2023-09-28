@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("load_documents/", load_documents, name="load_documents"),  # POST {documents: list[str]}
     path("chat_response/", chat_response, name="chat_response"),  # GET {promt: str}
-    path("generate/", generate_document, name="generator")
+    path("generate/", generate_document, name="generator"),
+    path('fetch_title/', views.fetch_title, name='fetch_title')
 ]
