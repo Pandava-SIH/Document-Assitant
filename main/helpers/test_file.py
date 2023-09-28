@@ -1,4 +1,5 @@
 import re
+import time
 
 Bonds = {"Format for Simple Money Bond":"""DRAFT OF SIMPLE MONEY BOND 
 
@@ -4245,7 +4246,11 @@ new_Bonds = {key.lower():value for key, value in Bonds.items()}
 user_input = input()
     
 match = []
+start = time.time()
 for key, value in new_Bonds.items():
     if key.lower() in user_input.lower() or user_input.lower() in key.lower():
         match.append({key})
-print(match)
+
+end = time.time()
+
+print(match, end - start)
