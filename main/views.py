@@ -38,3 +38,7 @@ def generate_document(request: HttpRequest) -> JsonResponse:
     res = llm_response.generate_document(data)
     return JsonResponse({"document": res})
 
+
+def fetch_title(request):
+    title = "Sample Title"
+    return JsonResponse({"titles": bond.keys})
